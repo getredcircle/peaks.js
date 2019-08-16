@@ -219,10 +219,9 @@ define(['konva'], function(Konva) {
         options.onDragEnd(options.point);
       });
     }
-
     if (options.onDblClick) {
       group.on('dblclick', function(event) {
-        options.onDblClick(options.point);
+        options.onDblClick(options.point, event);
       });
     }
 

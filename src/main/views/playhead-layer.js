@@ -97,7 +97,7 @@ define([
 
   PlayheadLayer.prototype._createPlayhead = function(color) {
     this._playheadLine = new Konva.Line({
-      points: [0.5, 0, 0.5, this._view.getHeight()],
+      points: [0.5, 20, 0.5, this._view.getHeight()],
       stroke: color,
       strokeWidth: 1
     });

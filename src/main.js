@@ -18,7 +18,8 @@ define('peaks', [
   'peaks/waveform/waveform-builder',
   'peaks/waveform/waveform.mixins',
   'peaks/waveform/waveform.utils',
-  'peaks/player/player.keyboard'
+  'peaks/player/player.keyboard',
+  'lodash'
   ], function(
     Colors,
     EventEmitter,
@@ -31,7 +32,7 @@ define('peaks', [
     WaveformBuilder,
     mixins,
     Utils,
-    KeyboardHandler) {
+    KeyboardHandler, lodash) {
   'use strict';
 
   function buildUi(container) {
@@ -401,7 +402,6 @@ define('peaks', [
     if (opts.template && opts.containers) {
       throw new Error('Peaks.init(): Please specify either a template or a containers option, but not both');
     }
-
     // The 'containers' option overrides 'template'.
     if (opts.containers) {
       opts.template = null;
@@ -423,7 +423,7 @@ define('peaks', [
     }
 
     Utils.extend(this.options, opts);
-    Utils.extend(this.options, {
+    lodash.defaults(this.options, {
       createSegmentMarker: mixins.createSegmentMarker,
       createSegmentLabel:  mixins.createSegmentLabel,
       createPointMarker:   mixins.createPointMarker

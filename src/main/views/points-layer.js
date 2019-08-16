@@ -64,6 +64,7 @@ define([
     });
 
     this._peaks.on('points.add', function(points) {
+      // eslint-disable-next-line
       var frameOffset = self._view.getFrameOffset();
       var width = self._view.getWidth();
 
@@ -76,7 +77,9 @@ define([
         }
       });
 
-      self.updatePoints(frameStartTime, frameEndTime);
+      var displayData = self.updatePoints(frameStartTime, frameEndTime);
+
+      this.views._peaks.emit('points.addWithDisplay', points,displayData);
     });
 
     this._peaks.on('points.remove', function(points) {
@@ -135,7 +138,7 @@ define([
       onDragEnd:    this._onPointHandleDragEnd.bind(this),
       onMouseEnter: this._onPointHandleMouseEnter.bind(this),
       onMouseLeave: this._onPointHandleMouseLeave.bind(this)
-    });
+    }, Konva);
 
     pointGroup.add(pointGroup.marker);
 
@@ -200,8 +203,8 @@ define([
    * @param {Point} point
    */
 
-  PointsLayer.prototype._onPointHandleDblClick = function(point) {
-    this._peaks.emit('points.dblclick', point);
+  PointsLayer.prototype._onPointHandleDblClick = function(point, event) {
+    this._peaks.emit('points.dblclick', point, event);
   };
 
   /**
@@ -234,8 +237,7 @@ define([
     var points = this._peaks.points.find(startTime, endTime);
 
     var count = points.length;
-
-    points.forEach(this._updatePoint.bind(this));
+    var displayData = points.map(this._updatePoint.bind(this));
 
     // TODO: in the overview all segments are visible, so no need to check
     count += this._removeInvisiblePoints(startTime, endTime);
@@ -243,6 +245,7 @@ define([
     if (count > 0) {
       this._layer.draw();
     }
+    return displayData;
   };
 
   /**
@@ -265,6 +268,7 @@ define([
         pointGroup.marker.time.setText(Utils.formatTime(point.time, false));
       }
     }
+    return { startPixel: startPixel, timestampOffset: timestampOffset };
   };
 
   /**

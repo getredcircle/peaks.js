@@ -129,7 +129,7 @@ declare module 'peaks.js' {
   interface InstanceEvents {
     'peaks.ready': () => any;
     'points.add': (points: Point[]) => any;
-    'points.dblclick': (point: Point) => any;
+    'points.dblclick': (point: Point, e: Event) => any;
     'points.dragend': (point: Point) => any;
     'points.dragmove': (point: Point) => any;
     'points.dragstart': (point: Point) => any;

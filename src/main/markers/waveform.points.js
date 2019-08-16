@@ -170,7 +170,6 @@ define([
     points.forEach(function(point) {
       self._addPoint(point);
     });
-
     this._peaks.emit('points.add', points);
   };
 
